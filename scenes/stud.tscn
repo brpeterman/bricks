@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://0aykd8p2j6ke"]
+
+[ext_resource type="Script" path="res://scenes/stud.gd" id="1_qyp2u"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7wi8n"]
+radius = 0.35
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_5bsgy"]
+resource_local_to_scene = true
+top_radius = 0.3
+bottom_radius = 0.3
+height = 0.2
+
+[node name="Stud" type="Node3D" groups=["studs"]]
+script = ExtResource("1_qyp2u")
+
+[node name="DetectionArea" type="Area3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+shape = SubResource("SphereShape3D_7wi8n")
+
+[node name="StudMesh" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0)
+mesh = SubResource("CylinderMesh_5bsgy")
+
+[connection signal="area_entered" from="DetectionArea" to="." method="_on_detection_area_area_entered"]
+[connection signal="area_exited" from="DetectionArea" to="." method="_on_detection_area_area_exited"]

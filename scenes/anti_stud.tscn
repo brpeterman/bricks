@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://djs18boul3nwv"]
+
+[ext_resource type="Script" path="res://scenes/anti_stud.gd" id="1_l4fgy"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ev5tw"]
+
+[node name="AntiStud" type="Node3D"]
+script = ExtResource("1_l4fgy")
+
+[node name="DetectionArea" type="Area3D" parent="." groups=["antistuds"]]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
+shape = SubResource("SphereShape3D_ev5tw")

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://byewss841vcnq"]
+
+[ext_resource type="Script" path="res://scenes/brick_instance.gd" id="1_jc4sw"]
+
+[node name="BrickInstance" type="Node3D" groups=["bricks"]]
+script = ExtResource("1_jc4sw")
