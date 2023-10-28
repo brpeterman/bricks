@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="BrickDefinition" load_steps=4 format=3 uid="uid://b1qax7u37d4l3"]
+
+[ext_resource type="Script" path="res://resources/bricks/brick_definition.gd" id="1_tc3fw"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_2plyf"]
+resource_local_to_scene = true
+size = Vector3(1, 0.4, 2)
+
+[sub_resource type="BoxMesh" id="BoxMesh_v7onf"]
+size = Vector3(1, 0.4, 2)
+
+[resource]
+script = ExtResource("1_tc3fw")
+mesh = SubResource("BoxMesh_v7onf")
+collision_mesh = SubResource("BoxMesh_2plyf")
+studs = Array[Transform3D]([Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, -0.5), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0.5)])
+anti_studs = Array[Transform3D]([Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, -0.5), Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0.5)])
