@@ -4,7 +4,10 @@ class_name BrickInstance
 signal can_connect_brick(stud_brick: BrickInstance, anti_stud_brick: BrickInstance, stud: Stud, anti_stud: AntiStud)
 signal brick_selected(brick: BrickInstance)
 
+var Constants = load("res://util/constants.gd")
+
 var brick_definition: BrickDefinition
+var material: BaseMaterial3D
 var studs: Array[Stud]
 var anti_studs: Array[AntiStud]
 var intersecting = false
@@ -16,6 +19,10 @@ var anti_stud_scene = preload("res://scenes/anti_stud.tscn")
 
 func init(brick_def: BrickDefinition) -> BrickInstance: #TODO: Accept a material to apply to meshes
 	brick_definition = brick_def
+	return self
+
+func paint(new_material: BaseMaterial3D):
+	material = new_material
 	return self
 
 func try_connect_all():
@@ -82,23 +89,27 @@ func _ready():
 	# Create mesh instances, collision, and studs
 	var brick_mesh = MeshInstance3D.new()
 	brick_mesh.mesh = brick_definition.mesh
+	if material != null:
+		brick_mesh.material_override = material
 	add_child(brick_mesh)
 	
 	var collision_shape = CollisionShape3D.new()
 	collision_shape.shape = brick_definition.collision_mesh.create_trimesh_shape()
 	var collision_object = Area3D.new()
 	collision_object.add_child(collision_shape)
+	collision_object.collision_layer = Constants.COLLISION_LAYER_BRICKS
+	collision_object.collision_mask = Constants.COLLISION_LAYER_WORLD | Constants.COLLISION_LAYER_BRICKS
 	add_child(collision_object)
 	
-	collision_object.connect("input_event", _on_input_event)
-	
 	for stud_def in brick_definition.studs:
-		var stud = stud_scene.instantiate()
+		var stud = stud_scene.instantiate() as Stud
+		if material != null:
+			stud.paint(material)
 		stud.transform = stud_def
 		studs.append(stud)
 		add_child(stud)
 	for anti_stud_def in brick_definition.anti_studs:
-		var anti_stud = anti_stud_scene.instantiate()
+		var anti_stud = anti_stud_scene.instantiate() as AntiStud
 		anti_stud.transform = anti_stud_def
 		anti_studs.append(anti_stud)
 		add_child(anti_stud)
@@ -117,12 +128,6 @@ func _on_can_connect(stud: Stud, anti_stud: AntiStud):
 	if intersecting: return
 	
 	potential_connections[anti_stud] = stud
-	#can_connect_brick.emit(self, anti_stud.get_parent_node_3d() as BrickInstance, stud, anti_stud)
 	
 func _on_can_not_connect(anti_stud: AntiStud):
 	potential_connections[anti_stud] = null
-
-func _on_input_event(camera: Node, event: InputEvent, position: Vector3, normal: Vector3, shape_idx: int):
-	if event is InputEventMouseButton and event.pressed and event.button_index == 1:
-		print("Selected a brick")
-		brick_selected.emit(self)

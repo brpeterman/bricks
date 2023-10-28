@@ -55,6 +55,12 @@ detach={
 ]
 }
 
+[layer_names]
+
+3d_physics/layer_1="world"
+3d_physics/layer_2="bricks"
+3d_physics/layer_3="studs"
+
 [rendering]
 
 lights_and_shadows/directional_shadow/size=16384

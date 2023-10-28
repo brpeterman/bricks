@@ -27,6 +27,12 @@ func unlink():
 func is_linked() -> bool:
 	return linked_to != null
 
+func aligned_with(stud: Stud) -> bool:
+	var stud_direction = stud.global_basis.y.normalized()
+	var anti_stud_direction = global_basis.y.normalized()
+	var alignment = stud_direction.dot(anti_stud_direction)
+	return alignment > 0.95
+
 func _on_detection_area_area_entered(area: Area3D):
 	if is_linked(): return
 	if not area.get_parent() is Stud: return
@@ -34,6 +40,7 @@ func _on_detection_area_area_entered(area: Area3D):
 	print("Can connect stud and anti-stud")
 	var stud = area.get_parent() as Stud
 	if stud.is_linked(): return
+	if not aligned_with(stud): return
 	
 	can_connect.emit(stud, self)
 

@@ -20,3 +20,6 @@ func unlink():
 
 func is_linked() -> bool:
 	return linked_to != null
+
+func paint(material: BaseMaterial3D):
+	$StudMesh.material_override = material

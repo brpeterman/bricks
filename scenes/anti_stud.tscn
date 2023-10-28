@@ -2,16 +2,19 @@
 
 [ext_resource type="Script" path="res://scenes/anti_stud.gd" id="1_l4fgy"]
 
-[sub_resource type="SphereShape3D" id="SphereShape3D_ev5tw"]
-resource_local_to_scene = true
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_lfa1p"]
+height = 0.2
+radius = 0.3
 
 [node name="AntiStud" type="Node3D"]
 script = ExtResource("1_l4fgy")
 
 [node name="DetectionArea" type="Area3D" parent="." groups=["antistuds"]]
+collision_layer = 4
+collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
-shape = SubResource("SphereShape3D_ev5tw")
+shape = SubResource("CylinderShape3D_lfa1p")
 
 [connection signal="area_entered" from="DetectionArea" to="." method="_on_detection_area_area_entered"]
 [connection signal="area_exited" from="DetectionArea" to="." method="_on_detection_area_area_exited"]
