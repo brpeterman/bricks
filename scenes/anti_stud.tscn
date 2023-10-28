@@ -3,6 +3,7 @@
 [ext_resource type="Script" path="res://scenes/anti_stud.gd" id="1_l4fgy"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_ev5tw"]
+resource_local_to_scene = true
 
 [node name="AntiStud" type="Node3D"]
 script = ExtResource("1_l4fgy")
@@ -11,3 +12,6 @@ script = ExtResource("1_l4fgy")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="DetectionArea"]
 shape = SubResource("SphereShape3D_ev5tw")
+
+[connection signal="area_entered" from="DetectionArea" to="." method="_on_detection_area_area_entered"]
+[connection signal="area_exited" from="DetectionArea" to="." method="_on_detection_area_area_exited"]

@@ -1,6 +1,6 @@
 extends Node3D
 
-const PUSH_PULL_INCREMENT = 0.5
+const PUSH_PULL_INCREMENT = 0.25
 
 const BRICK_INSTANCE_SCENE = preload("res://scenes/brick_instance.tscn")
 const BRICK_DEF_1x1 = preload("res://resources/bricks/brick_1x1.tres")
@@ -49,13 +49,7 @@ func _on_brick_selected(brick: BrickInstance):
 	if selected_brick != null: return try_release_selected()
 	
 	selected_brick = brick
-	selected_tree = find_root_brick(brick)
-
-func find_root_brick(brick: BrickInstance) -> BrickInstance:
-	var root = brick
-	while root.get_parent() is BrickInstance:
-		root = root.get_parent()
-	return root
+	selected_tree = brick.get_root()
 
 func try_release_selected():
 	try_connect_selected()

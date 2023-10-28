@@ -1,4 +1,4 @@
-class_name Brick
+class_name BrickDefinition
 
 @export var mesh: Mesh
 @export var collision_mesh: Mesh

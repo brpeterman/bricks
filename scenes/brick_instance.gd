@@ -4,16 +4,17 @@ class_name BrickInstance
 signal can_connect_brick(stud_brick: BrickInstance, anti_stud_brick: BrickInstance, stud: Stud, anti_stud: AntiStud)
 signal brick_selected(brick: BrickInstance)
 
-var brick_definition: Brick
+var brick_definition: BrickDefinition
 var studs: Array[Stud]
 var anti_studs: Array[AntiStud]
 var intersecting = false
 var potential_connections = {}
+var rotating = false
 
 var stud_scene = preload("res://scenes/stud.tscn")
 var anti_stud_scene = preload("res://scenes/anti_stud.tscn")
 
-func init(brick_def: Brick) -> BrickInstance: #TODO: Accept a material to apply to meshes
+func init(brick_def: BrickDefinition) -> BrickInstance: #TODO: Accept a material to apply to meshes
 	brick_definition = brick_def
 	return self
 
@@ -30,14 +31,15 @@ func try_connect_all():
 	
 	# Align the brick so that connection is flush
 	var offset = first_stud.global_position - first_anti_stud.global_position
-	position += offset
-	
-	# Connect 'em all up
-	complete_potential_connections()
+	get_root().position += offset
 	
 	# Parent to the first stud's brick
 	var parent_brick = first_stud.get_parent() as BrickInstance
-	reparent(parent_brick)
+	if get_root() != parent_brick.get_root():
+		get_root().reparent(parent_brick)
+	
+	# Connect 'em all up
+	complete_potential_connections()
 	
 func unparent():
 	for anti_stud in anti_studs:
@@ -48,7 +50,13 @@ func unparent():
 		reparent(current_scene)
 
 func rotate_brick(amount: float):
-	rotation.y += amount
+	if rotating: return
+	
+	rotating = true
+	var tween = create_tween()
+	var new_rotation = rotation + Vector3(0, amount, 0)
+	tween.tween_property(self, "rotation", new_rotation, 0.2)
+	tween.tween_callback(func(): rotating = false)
 
 func complete_potential_connections():
 	for anti_stud in potential_connections:
@@ -56,7 +64,18 @@ func complete_potential_connections():
 		if stud != null:
 			stud.link(anti_stud)
 			anti_stud.link(stud)
+			var stud_brick = stud.get_parent() as BrickInstance
+			if stud_brick.get_root() != get_root():
+				var offset = anti_stud.global_position - stud.global_position
+				stud_brick.get_root().global_position += offset
+				stud_brick.get_root().reparent(self)
 	potential_connections = {}
+
+func get_root() -> BrickInstance:
+	var parent = self
+	while parent.get_parent() is BrickInstance:
+		parent = parent.get_parent()
+	return parent
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

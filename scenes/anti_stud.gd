@@ -27,8 +27,22 @@ func unlink():
 func is_linked() -> bool:
 	return linked_to != null
 
-func can_connect_to(stud: Stud):
+func _on_detection_area_area_entered(area: Area3D):
+	if is_linked(): return
+	if not area.get_parent() is Stud: return
+	
+	print("Can connect stud and anti-stud")
+	var stud = area.get_parent() as Stud
+	if stud.is_linked(): return
+	
 	can_connect.emit(stud, self)
 
-func can_not_connect_any():
+func _on_detection_area_area_exited(area):
+	if is_linked(): return
+	if not area.get_parent() is Stud: return
+	
+	print("Stud left area")
+	var stud = area.get_parent() as Stud
+	if stud.is_linked(): return
+	
 	can_not_connect.emit(self)

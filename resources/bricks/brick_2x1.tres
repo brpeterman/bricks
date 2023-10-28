@@ -1,6 +1,6 @@
 [gd_resource type="Resource" script_class="Brick" load_steps=4 format=3 uid="uid://cs1t0ltbk5hfq"]
 
-[ext_resource type="Script" path="res://resources/bricks/brick.gd" id="1_pvmm0"]
+[ext_resource type="Script" path="res://resources/bricks/brick_definition.gd" id="1_pvmm0"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_2plyf"]
 resource_local_to_scene = true

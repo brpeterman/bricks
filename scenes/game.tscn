@@ -1,15 +1,29 @@
-[gd_scene load_steps=3 format=3 uid="uid://ck7md70ce8uuf"]
+[gd_scene load_steps=5 format=3 uid="uid://ck7md70ce8uuf"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_65es6"]
 
 [sub_resource type="Environment" id="Environment_j5t1s"]
 
+[sub_resource type="BoxMesh" id="BoxMesh_so1ob"]
+size = Vector3(20, 1, 20)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_txpce"]
+albedo_color = Color(0.231373, 0.541176, 0.117647, 1)
+
 [node name="Game" type="Node3D"]
 script = ExtResource("1_65es6")
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.965926, 0.258819, 0, -0.258819, 0.965926, -0.599395, 3.33814, 5.60205)
+transform = Transform3D(1, 0, 0, 0, 0.739455, 0.673206, 0, -0.673206, 0.739455, -0.599395, 4.15048, 5.60205)
 environment = SubResource("Environment_j5t1s")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(0.813253, -0.0151108, -0.581714, 0.58191, 0.0211182, 0.812979, 0, -0.999663, 0.0259676, 0, 4.62684, 0)
+transform = Transform3D(0.813253, -0.0151108, -0.581714, 0.566125, 0.251808, 0.784918, 0.134619, -0.967659, 0.213338, 0, 4.62684, 0)
+shadow_enabled = true
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0)
+mesh = SubResource("BoxMesh_so1ob")
+surface_material_override/0 = SubResource("StandardMaterial3D_txpce")
